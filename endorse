@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+const program = require('commander');
+const main = require('./src/main');
+
+program
+    .version('0.1.0')
+    .option('-e, --email', 'Email from LinkedIn account')
+    .option('-p, --password', 'Password from LinkedIn account')
+    .action(async (email, password) => {
+        await main(email, password);
+    })
+    .parse(process.argv);
+
+if (!program.email) {
+    console.log('  - Please provide Email from LinkedIn account');
+    process.exit();
+}
+if (!program.password) {
+    console.log('  - Please provide Password from LinkedIn account');
+    process.exit();
+}

@@ -1,0 +1,9 @@
+{
+  "name": "linkedin-endorse",
+  "version": "0.0.1",
+  "dependencies": {
+    "commander": "^2.16.0",
+    "lodash": "^4.17.10",
+    "puppeteer": "^1.6.0"
+  }
+}
