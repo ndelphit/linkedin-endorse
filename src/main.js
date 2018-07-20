@@ -13,6 +13,7 @@ const disableImagesLoad = async (page) => {
         }
     });
 };
+
 /**
  * Initialize bot
  */

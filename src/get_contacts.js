@@ -6,9 +6,11 @@ class GetContacts {
     async goToContacts() {
         try {
             const {page} = this;
-            await page.goto('https://www.linkedin.com/mynetwork/invite-connect/connections/');
-            await page.waitForNavigation();
+            await page.goto('https://www.linkedin.com/mynetwork/invite-connect/connections/',  {
+                timeout: 0
+            });
         } catch (err) {
+            console.log(err);
             console.log("Can't go to contacts")
         }
     };

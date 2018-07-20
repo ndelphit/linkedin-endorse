@@ -6,14 +6,20 @@ class EndorseSkills {
         this.contacts = contacts;
     }
 
+    /**
+     * Go to contact profile page
+     */
     async goToContact(url) {
         const {page} = this;
-        await page.goto(url);
-        await page.waitForNavigation();
-        await page.waitFor(300);
+        await page.goto(url, {
+            timeout: 0
+        });
     };
 
-    async scrollToContactsBlock() {
+    /**
+     * Scrolls to user skills block.
+     */
+     async scrollToContactsBlock() {
         try {
             let count = 0;
             let isFoundSkillsCategory = null;
@@ -25,10 +31,14 @@ class EndorseSkills {
             }
             return isFoundSkillsCategory;
         } catch (err) {
-            console.log(err);
+            console.log("Can't scroll to user skills block");
         }
     }
-    async ensureSkills() {
+
+    /**
+     * Ensure users skills
+     */
+    async ensureSkills(url) {
         try {
             await this.page.evaluate(async () => {
                 const buttons = document.querySelectorAll('button[data-control-name="endorse"]');
@@ -36,24 +46,28 @@ class EndorseSkills {
                     await element.click()
                 }
             });
+            console.log('Click!', url);
         } catch (err) {
-            console.log(err.message)
+            console.log("Can't ensure user skills")
         }
     }
 
+    /**
+     * Run loop for busting users and ensure him skills
+     */
     async init() {
         try {
             const contacts = _.chain(this.contacts).shuffle().take(10).value();
             for (let url of contacts) {
                 await this.goToContact(url);
                 const block = await this.scrollToContactsBlock();
+                console.log('___________');
                 if (block) {
-                    console.log('Click!', url);
-                    return await this.ensureSkills();
+                    await this.ensureSkills(url);
                 }
             }
         } catch (err) {
-            console.log(err.message)
+            console.log("Can't run loop for busting users and ensure")
         }
 
     }
