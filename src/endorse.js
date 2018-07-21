@@ -57,7 +57,7 @@ class EndorseSkills {
      */
     async init() {
         try {
-            const contacts = _.chain(this.contacts).shuffle().take(10).value();
+            const contacts = _.chain(this.contacts).shuffle().value();
             for (let url of contacts) {
                 await this.goToContact(url);
                 const block = await this.scrollToContactsBlock();

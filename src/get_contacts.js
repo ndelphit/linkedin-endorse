@@ -33,9 +33,10 @@ class GetContacts {
      */
     extractContactCount() {
         try {
-            return this.page.evaluate(() => {
+            const count = this.page.evaluate(() => {
                 return window.document.querySelector('.mn-connections__header h2').innerText.replace(/\D+/g, "");
-            })
+            });
+            return count ? count : 0;
         } catch (err) {
             console.log("Can't extract contacts count")
         }
@@ -48,7 +49,12 @@ class GetContacts {
             const {page} = this;
             let items = [];
             let previousHeight;
-            while (items.length < 50) {
+            const contactsCount = await this.extractContactCount();
+            if (!contactsCount) {
+                console.log("You don't have contacts");
+                return;
+            }
+            while (items.length < Number(contactsCount)) {
                 items = await this.extractContacts();
                 previousHeight = await page.evaluate('window.document.querySelector(\'.mn-connections\').scrollHeight');
                 await page.evaluate('window.scrollBy(0, 5000)');
@@ -57,7 +63,7 @@ class GetContacts {
             }
             return items;
         } catch (err) {
-            console.log("Can't scroll");
+            console.log("Can't scrolls and extracts contacts from a page.");
         }
     };
 
